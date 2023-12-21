@@ -1,0 +1,19 @@
+<div class="tag-component-container">
+  <div class="tag-section">
+    <h2>Create New Tag</h2>
+    <form (submit)="createTag()">
+      <input type="text" class="tag-input" name="tagName" [(ngModel)]="newTagName">
+      <button type="submit" class="tag-button">Create</button>
+    </form>
+  </div>
+
+  <div class="tag-section">
+    <h2>Existing Tags</h2>
+    <div>
+      <select class="tag-select" [(ngModel)]="selectedTagId">
+        <option *ngFor="let tag of availableTags" [value]="tag.id">{{ tag.name }}</option>
+      </select>
+      <button class="tag-delete-button" (click)="deleteTag(selectedTagId)">Delete</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+/* Tag component specific styles */
+.tag-component-container {
+  display: flex;
+  align-items: center;
+}
+
+.tag-input {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  height: 25px;
+  margin-right: 5px;
+}
+
+.tag-button {
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tag-button:hover {
+  filter: brightness(90%);
+  background-color: #0056b3;
+}
+
+.tag-select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-top: 10px;
+}
+
+.tag-delete-button {
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #dc3545;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tag-delete-button:hover {
+  filter: brightness(90%);
+  background-color: #bd2130;
+}
+
+.tag-component-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.tag-section {
+  margin-bottom: 10px;
+}

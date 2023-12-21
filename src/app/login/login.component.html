@@ -1,0 +1,10 @@
+<form (ngSubmit)="login()" class="custom-login-form">
+  <label for="login-username">Email:</label>
+  <input type="text" id="login-username" name="login-username" [(ngModel)]="loginEmail">
+
+  <label for="login-password">Password:</label>
+  <input type="password" id="login-password" name="login-password" [(ngModel)]="loginPassword">
+
+  <button type="submit">Login</button>
+  <button type="button" (click)="navigateToRegistration()">Register</button>
+</form>

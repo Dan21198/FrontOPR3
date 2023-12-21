@@ -1,0 +1,14 @@
+<form (ngSubmit)="register()" class="custom-registration-form">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" [(ngModel)]="username" class="form-control">
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" [(ngModel)]="email" class="form-control">
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" [(ngModel)]="password" class="form-control">
+
+  <div class="text-center mt-4">
+    <button type="submit" class="btn btn-primary">Register</button>
+  </div>
+</form>
