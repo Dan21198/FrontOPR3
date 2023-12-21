@@ -1,0 +1,34 @@
+<p>
+  <mat-toolbar color="primary" class="custom-toolbar">
+    <button mat-icon-button class="example-icon" aria-label="Menu icon" [matMenuTriggerFor]="menu" (click)="toggleMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span class="app-title pointer-cursor" (click)="navigateToLogin()">Note App</span>
+    <span class="example-spacer"></span>
+    <div class="menu-options" [@slideInOut]="menuState" >
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="navigateToTags()">
+          <mat-icon>local_offer</mat-icon>
+          <span>Tag</span>
+        </button>
+        <button mat-menu-item (click)="navigateToNotes()">
+          <mat-icon>note</mat-icon>
+          <span>Notes</span>
+        </button>
+        <button mat-menu-item (click)="navigateToUserSettings()">
+          <mat-icon>settings</mat-icon>
+          <span>User Settings</span>
+        </button>
+      </mat-menu>
+    </div>
+    <button mat-icon-button class="example-icon" (click)="logout()" aria-label="Logout">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Favorite icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
+</p>

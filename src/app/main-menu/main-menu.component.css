@@ -1,0 +1,50 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.custom-toolbar {
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 12px;
+}
+
+.example-icon {
+  color: white;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.menu-container {
+  display: flex;
+  align-items: center;
+}
+
+.menu-options {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 56px; /* Adjust this value as per your design */
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.example-icon {
+  margin: 8px;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}

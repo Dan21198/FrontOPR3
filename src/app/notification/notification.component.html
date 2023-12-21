@@ -1,0 +1,4 @@
+<div *ngIf="message" [ngClass]="['notification', type.toLowerCase()]">
+  {{ message }}
+  <button (click)="hide()">X</button>
+</div>
