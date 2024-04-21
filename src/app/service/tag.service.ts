@@ -1,35 +1,25 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Tag} from "../model/Tag";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TagService {
   private apiUrl = 'http://localhost:8080/api/v1/tags';
-  private jwtToken: string = '';
 
   constructor(private http: HttpClient) {}
 
-  setToken(token: string) {
-    if (token) {
-      this.jwtToken = token;
-      console.log('Token set:', this.jwtToken);
-    } else {
-      console.error('Invalid token provided.');
-    }
-  }
-
   private getHeaders(): HttpHeaders {
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-    if (this.jwtToken) {
-      headers = headers.append('Authorization', `Bearer ${this.jwtToken}`);
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      throw new Error('Token is missing or expired.');
     }
-    console.log('Headers:', headers);
-
-    return headers;
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
   }
 
   getTags(): Observable<any> {
@@ -42,10 +32,11 @@ export class TagService {
     return this.http.get<any[]>(`${this.apiUrl}/notes/${noteId}`, { headers });
   }
 
-  createTag(tagData: any): Observable<any> {
+  createTag(tagData: Tag): Observable<Tag> {
     const headers = this.getHeaders();
-    return this.http.post<any>(`${this.apiUrl}`, tagData, { headers });
+    return this.http.post<Tag>(this.apiUrl, tagData, { headers });
   }
+
 
   updateTag(tagId: number, tagData: any): Observable<any> {
     const headers = this.getHeaders();
@@ -59,8 +50,10 @@ export class TagService {
 
   assignTagToNote(tagId: number, noteId: number): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.put<any>(`${this.apiUrl}/${tagId}/assign/${noteId}`, null, { headers });
+    const body = { tagId, noteId };
+    return this.http.put<any>(`${this.apiUrl}/${tagId}/assign/${noteId}`, body, { headers });
   }
+
 
   removeTagFromNote(tagId: number, noteId: number): Observable<any> {
     const headers = this.getHeaders();

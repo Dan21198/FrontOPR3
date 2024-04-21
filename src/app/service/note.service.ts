@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 import {AuthService} from "./auth.service";
 
 @Injectable({
@@ -8,33 +8,31 @@ import {AuthService} from "./auth.service";
 })
 export class NoteService {
   private baseUrl = 'http://localhost:8080/api/v1/notes';
-  private jwtToken: string = '';
-  constructor(private http: HttpClient,
-              private authService: AuthService) { }
-
-  setToken(token: string) {
-    if (token) {
-      this.jwtToken = token;
-      console.log('Token set:', this.jwtToken);
-    } else {
-      console.error('Invalid token provided.');
-    }
-  }
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-    if (this.jwtToken) {
-      headers = headers.append('Authorization', `Bearer ${this.jwtToken}`);
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      throw new Error('Token is missing or expired.');
     }
-    console.log('Headers:', headers);
-
-    return headers;
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
   }
+
   getAllNotes(): Observable<any[]> {
-    const headers = this.getHeaders();
-    return this.http.get<any[]>(`${this.baseUrl}`, { headers });
+    let headers: HttpHeaders;
+    try {
+      headers = this.getHeaders();
+    } catch (error) {
+      return throwError(error);
+    }
+    return this.http.get<any[]>(`${this.baseUrl}`, { headers }).pipe(
+      catchError((error) => {
+        return throwError(error);
+      })
+    );
   }
 
   getNoteById(noteId: number): Observable<any> {

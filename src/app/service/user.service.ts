@@ -7,31 +7,19 @@ import {User} from "../user";
   providedIn: 'root'
 })
 export class UserService {
-
   private baseUrl = 'http://localhost:8080/api/v1/users';
-  private jwtToken: string = '';
 
   constructor(private http: HttpClient) {}
 
-  setToken(token: string) {
-    if (token) {
-      this.jwtToken = token;
-      console.log('Token set:', this.jwtToken);
-    } else {
-      console.error('Invalid token provided.');
-    }
-  }
-
   private getHeaders(): HttpHeaders {
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-    if (this.jwtToken) {
-      headers = headers.append('Authorization', `Bearer ${this.jwtToken}`);
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      throw new Error('Token is missing or expired.');
     }
-    console.log('Headers:', headers);
-
-    return headers;
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
   }
 
   getUserById(userId: number): Observable<User> {
@@ -57,5 +45,11 @@ export class UserService {
   deleteUser(userId: number): Observable<void> {
     const headers = this.getHeaders()
     return this.http.delete<void>(`${this.baseUrl}/${userId}`, { headers });
+  }
+
+  getUserByEmail(email: string): Observable<User> {
+    const headers = this.getHeaders()
+    const params = { email };
+    return this.http.get<User>(`${this.baseUrl}/email`, { headers, params });
   }
 }

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../user";
 import {UserService} from "../service/user.service";
 import {CommonModule} from "@angular/common";
+import {NotificationService} from "../service/notification.service";
+import {NotificationStatus} from "../notification-status";
 
 @Component({
   selector: 'app-user',
@@ -15,7 +17,8 @@ import {CommonModule} from "@angular/common";
 export class UserComponent implements OnInit{
   users: User[] = [];
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -28,9 +31,18 @@ export class UserComponent implements OnInit{
   }
 
   deleteUser(userId: number): void {
-    this.userService.deleteUser(userId).subscribe(() => {
-      console.log(`User with ID ${userId} deleted.`);
-      this.loadUsers();
-    });
+    this.userService.deleteUser(userId).subscribe(
+      () => {
+        console.log(`User with ID ${userId} deleted.`);
+        this.loadUsers();
+
+        this.notificationService.show('User deleted successfully', NotificationStatus.Success);
+      },
+      (error) => {
+        console.error(`Error deleting user with ID ${userId}:`, error);
+
+        this.notificationService.show('Error deleting user', NotificationStatus.Fail);
+      }
+    );
   }
 }

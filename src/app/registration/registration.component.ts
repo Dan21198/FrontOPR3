@@ -21,7 +21,7 @@ export class RegistrationComponent {
       password: this.password
     }).subscribe(response => {
       console.log('User registered successfully:', response);
-      this.router.navigate(['/notes']);
+      this.router.navigate(['/login']);
     }, error => {
       console.error('Registration failed:', error);
     });

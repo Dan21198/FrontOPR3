@@ -2,15 +2,16 @@
 <div class="custom-note-form">
   <div class="note-and-tag">
     <div class="create-note">
-  <h2>Create New Note</h2>
-  <form (submit)="createNote()">
-    <label>Title:</label>
-    <input type="text" [(ngModel)]="newNote.title" name="title" required><br><br>
-    <label>content:</label>
-    <textarea [(ngModel)]="newNote.content" name="content" required></textarea><br><br>
-    <button type="submit">Create Note</button>
-  </form>
-</div>
+      <h2>Create New Note</h2>
+      <form (ngSubmit)="createNote()">
+        <label>Title:</label>
+        <input type="text" [(ngModel)]="newNote.title" name="title" required #titleInput="ngModel"><br><br>
+        <label>Content:</label>
+        <textarea [(ngModel)]="newNote.content" name="content" required></textarea><br><br>
+        <button type="submit" [style.background]="titleInput.valid ? '#007bff' : 'grey'" [disabled]="!titleInput.valid || titleInput.pristine">Create Note</button>
+      </form>
+    </div>
+
   </div>
 <hr>
 
@@ -21,8 +22,11 @@
       <div *ngIf="editingNoteId !== note.id; else editMode">
         <strong>{{ note.title }}</strong> - {{ note.content }}
         <p>Tags:
-          <span *ngFor="let tag of note.tags">{{ tag.name }}</span>
+          <span *ngFor="let tag of note.tags">
+          <span *ngIf="tag">{{ tag.name }}</span>
+         </span>
         </p>
+
         <button (click)="startEditing(note.id)">Edit</button>
         <button (click)="deleteNote(note.id)">Delete</button>
       </div>
@@ -39,8 +43,8 @@
             <select [(ngModel)]="selectedTagId" [ngModelOptions]="{ standalone: true }">
               <option *ngFor="let tag of availableTags" [value]="tag.id">{{ tag.name }}</option>
             </select>
-            <button type="button" (click)="assignTag(selectedTagId)">Assign Tag</button>
-            <button type="button" (click)="unassignTag(selectedTagId)">Unassign Tag</button>
+            <button type="button" (click)="assignTag(selectedTagId); cancelEditing()">Assign Tag</button>
+            <button type="button" (click)="unassignTag(selectedTagId); cancelEditing()">Unassign Tag</button>
           </div>
 
           <div class="button-group">
