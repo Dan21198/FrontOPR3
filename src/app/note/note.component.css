@@ -1,4 +1,4 @@
-/* Note component specific form style */
+/* General Form Styling */
 .custom-note-form form {
   display: flex;
   flex-direction: column;
@@ -14,32 +14,32 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.new-note-section {
+.new-note-section, .search-section {
   display: flex;
-  align-items: flex-start; /* Align items at the start of the flex container */
+  align-items: flex-start;
 }
 
 .note-and-tag {
   display: flex;
 }
 
-.create-note,
-.tag-section {
+.create-note, .tag-section, .search-section {
   flex: 1;
-  margin-right: 20px; /* Add space between the sections */
+  margin-right: 20px;
 }
-
 
 .custom-note-form label {
   margin-bottom: 5px;
 }
 
 .custom-note-form input[type="text"],
-.custom-note-form textarea {
+.custom-note-form textarea,
+.custom-note-form select {
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 3px;
+  width: 100%; /* Ensure full width for smaller screens */
 }
 
 .custom-note-form textarea {
@@ -47,17 +47,14 @@
   min-height: 100px; /* Set a minimum height for the textarea */
 }
 
-/* Adjusting the height of input fields for alignment */
 .custom-note-form input[type="text"],
 .custom-note-form textarea {
-  height: 30px; /* Set a specific height to align the input fields */
+  height: 30px; /* Align the height of text inputs and textareas */
 }
-
 
 .custom-note-form button {
   padding: 8px;
-  margin-left: 8px;
-  border: 1px solid #ccc;
+  margin-top: 8px; /* Provide spacing above the button */
   border-radius: 3px;
   background-color: #007bff;
   color: #fff;
@@ -72,7 +69,12 @@
 
 .custom-note-form button:hover {
   filter: brightness(90%);
-  background-color: #0056b3;
+}
+
+.search-section {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ccc; /* Visual separation from rest of form */
+  margin-bottom: 20px; /* Spacing before listing notes */
 }
 
 .tag-section {

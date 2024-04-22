@@ -8,6 +8,7 @@ import {AuthService} from "./auth.service";
 })
 export class NoteService {
   private baseUrl = 'http://localhost:8080/api/v1/notes';
+
   constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
@@ -35,8 +36,22 @@ export class NoteService {
     );
   }
 
-  getNoteById(noteId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${noteId}`);
+  getNotesByFinishedStatus(finished: boolean): Observable<any[]> {
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${this.baseUrl}/finished/${finished}`, { headers }).pipe(
+      catchError((error) => {
+        return throwError(error);
+      })
+    );
+  }
+
+  getNotesByTag(tagId: number): Observable<any[]> {
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${this.baseUrl}/tag/${tagId}`, { headers }).pipe(
+      catchError((error) => {
+        return throwError(error);
+      })
+    );
   }
 
   createNote(noteData: any): Observable<any> {
@@ -53,5 +68,4 @@ export class NoteService {
     const headers = this.getHeaders();
     return this.http.delete<any>(`${this.baseUrl}/${noteId}`, { headers });
   }
-
 }

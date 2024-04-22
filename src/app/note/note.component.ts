@@ -21,12 +21,14 @@ import {NotificationStatus} from "../notification-status";
 })
 export class NoteComponent implements OnInit {
   notes: any[] = [];
+  availableTags: any[] = [];
   newNote: any = {};
   updatedNote: any = {};
+  searchFinished: string = '';
+  searchTagId: string = '';
   editingNoteId: number | null = null;
-  selectedNoteId: number | null = null;
-  availableTags: any[] = [];
   selectedTagId: number | null = null;
+  selectedNoteId: number | null = null;
 
   constructor(private noteService: NoteService,
               private tagService: TagService,
@@ -38,58 +40,53 @@ export class NoteComponent implements OnInit {
     this.fetchAvailableTags();
   }
 
-  onNoteSelected(noteId: number): void {
-    this.selectedNoteId = noteId;
+  searchNotes() {
+    if (this.searchFinished !== '' && this.searchTagId !== '') {
+      // Handle case for both conditions
+    } else if (this.searchFinished !== '') {
+      this.noteService.getNotesByFinishedStatus(this.searchFinished === 'true').subscribe(
+        data => {
+          this.notes = data;
+          this.notes.forEach(note => this.fetchTagsForNote(note));
+        },
+        error => console.error('Error fetching notes', error)
+      );
+    } else if (this.searchTagId !== '') {
+      this.noteService.getNotesByTag(+this.searchTagId).subscribe(
+        data => {
+          this.notes = data;
+          this.notes.forEach(note => this.fetchTagsForNote(note));
+        },
+        error => console.error('Error fetching notes', error)
+      );
+    } else {
+      this.fetchAllNotes();
+    }
   }
 
   fetchAllNotes() {
     this.noteService.getAllNotes().subscribe(
-      (notes) => {
-        notes.forEach(note => {
-          this.tagService.getTagsByNoteId(note.id).subscribe(
-            (tags) => {
-              note.tags = tags;
-            },
-            (error) => {
-              console.error(`Error fetching tags for note ${note.id}:`, error);
-            }
-          );
-        });
+      notes => {
         this.notes = notes;
+        this.notes.forEach(note => this.fetchTagsForNote(note));
       },
-      (error) => {
-        console.error('Error fetching notes:', error);
-      }
+      error => console.error('Error fetching notes:', error)
     );
   }
 
-
-  fetchAllNotesById() {
-    if (this.selectedNoteId !== null) {
-      this.noteService.getNoteById(this.selectedNoteId).subscribe(
-        (notes) => {
-          this.notes = notes;
-        },
-        (error) => {
-          console.error('Error fetching notes:', error);
-        }
-      );
-    } else {
-      console.error('No note selected.');
-    }
+  fetchTagsForNote(note: any) {
+    this.tagService.getTagsByNoteId(note.id).subscribe(
+      tags => note.tags = tags,
+      error => console.error(`Error fetching tags for note ${note.id}:`, error)
+    );
   }
 
   fetchAvailableTags() {
     this.tagService.getTags().subscribe(
-      (tags) => {
-        this.availableTags = tags;
-      },
-      (error) => {
-        console.error('Error fetching tags:', error);
-      }
+      tags => this.availableTags = tags,
+      error => console.error('Error fetching tags:', error)
     );
   }
-
 
   createNote() {
     if (!this.newNote.content || this.newNote.content.trim() === '') {
@@ -133,12 +130,10 @@ export class NoteComponent implements OnInit {
         console.log('Note deleted successfully');
         this.fetchAllNotes();
 
-        // Notify success
         this.notificationService.show('Note deleted successfully',NotificationStatus.Success);
       },
       (error) => {
         console.error('Note deletion failed:', error);
-        // Notify failure
         this.notificationService.show('Note deletion failed',NotificationStatus.Fail);
       }
     );
@@ -209,10 +204,8 @@ export class NoteComponent implements OnInit {
     } else {
       console.error('No note selected.');
 
-      // Show error notification for no note selected
       this.notificationService.show('No note selected', NotificationStatus.Fail);
     }
   }
-
 
 }
