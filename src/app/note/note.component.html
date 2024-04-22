@@ -1,99 +1,81 @@
-
 <div class="custom-note-form">
-  <div class="note-and-tag">
-    <div class="create-note">
-      <h2>Create New Note</h2>
-      <form (ngSubmit)="createNote()">
-        <label>Title:</label>
-        <input type="text" [(ngModel)]="newNote.title" name="title" required #titleInput="ngModel"><br><br>
-        <label>Content:</label>
-        <textarea [(ngModel)]="newNote.content" name="content" required></textarea><br><br>
+  <div class="main-content">
+    <div class="notes-section">
+      <h2>Existing Notes</h2>
+      <div *ngIf="notes.length > 0">
+        <ul>
+          <li *ngFor="let note of notes">
+            <div *ngIf="editingNoteId !== note.id; else editMode">
+              <strong>{{ note.title }}</strong> - {{ note.content }}<br><br>
+              <p>Finished: {{ note.finished ? 'Yes' : 'No' }}</p>
+              <p>Finish Time: {{ note.finishTime | date:'medium' }}</p>
+              <p>Tags:
+                <span *ngFor="let tag of note.tags">
+                  <span *ngIf="tag">{{ tag.name }}</span>
+                </span>
+              </p>
+              <button (click)="startEditing(note.id)">Edit</button>
+              <button (click)="deleteNote(note.id)">Delete</button>
+            </div>
+            <ng-template #editMode>
+              <form (submit)="updateNote(note.id, updatedNote)">
+                <label>Title:</label>
+                <input type="text" id="editTitle" [(ngModel)]="updatedNote.title" name="title" required><br><br>
+                <label>Content:</label>
+                <textarea id="editContent" [(ngModel)]="updatedNote.content" name="content" required></textarea><br><br>
+                <label>Finished:</label>
+                <input type="checkbox" id="editFinished" [(ngModel)]="updatedNote.finished" name="finished"><br><br>
+                <label>Finish Time:</label>
+                <input type="datetime-local" id="editFinishTime" [(ngModel)]="updatedNote.finishTime" name="finishTime"><br><br>
+                <div class="button-group">
+                  <button type="submit">Save</button>
+                  <button type="button" (click)="cancelEditing()">Cancel</button>
+                </div>
+              </form>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="notes.length === 0">
+        <p>No notes available.</p>
+      </div>
+    </div>
 
-        <label>Finish Time:</label>
-        <input type="datetime-local" [(ngModel)]="newNote.finishTime" name="finishTime"><br><br>
-
-        <button type="submit" [style.background]="titleInput.valid ? '#007bff' : 'grey'"
-                [disabled]="!titleInput.valid || titleInput.pristine">Create Note</button>
+    <div class="search-section">
+      <form class="search-form">
+        <div class="form-group">
+          <label for="searchFinished">Finished:</label>
+          <select id="searchFinished" [(ngModel)]="searchFinished" name="searchFinished" [ngModelOptions]="{standalone: true}">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+            <option value="">All</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="searchTag">Tag:</label>
+          <select id="searchTag" [(ngModel)]="searchTagId" name="searchTag" [ngModelOptions]="{standalone: true}">
+            <option *ngFor="let tag of availableTags" [value]="tag.id">{{ tag.name }}</option>
+            <option value="">All</option>
+          </select>
+        </div>
+        <button type="button" class="search-button" (click)="searchNotes()">Search</button>
       </form>
     </div>
   </div>
 
-  <div class="search-section">
-    <h2>Search Notes</h2>
-    <form>
-      <div>
-        <label for="searchFinished">Finished:</label>
-        <select id="searchFinished" [(ngModel)]="searchFinished" name="searchFinished" [ngModelOptions]="{standalone: true}">
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-          <option value="">All</option>
-        </select>
-      </div>
-      <div>
-        <label for="searchTag">Tag:</label>
-        <select id="searchTag" [(ngModel)]="searchTagId" name="searchTag" [ngModelOptions]="{standalone: true}">
-          <option *ngFor="let tag of availableTags" [value]="tag.id">{{ tag.name }}</option>
-          <option value="">All</option>
-        </select>
-      </div>
-      <button type="button" (click)="searchNotes()">Search</button>
+    <hr>
+
+  <div class="create-note">
+    <h2>Create New Note</h2>
+    <form (ngSubmit)="createNote()">
+      <label>Title:</label>
+      <input type="text" [(ngModel)]="newNote.title" name="title" required #titleInput="ngModel"><br><br>
+      <label>Content:</label>
+      <textarea [(ngModel)]="newNote.content" name="content" required></textarea><br><br>
+      <label>Finish Time:</label>
+      <input type="datetime-local" [(ngModel)]="newNote.finishTime" name="finishTime"><br><br>
+      <button type="submit" [style.background]="titleInput.valid ? '#007bff' : 'grey'"
+              [disabled]="!titleInput.valid || titleInput.pristine">Create Note</button>
     </form>
   </div>
-<hr>
-
-<div *ngIf="notes.length > 0">
-
-  <h2>Existing Notes</h2>
-  <ul>
-    <li *ngFor="let note of notes">
-      <div *ngIf="editingNoteId !== note.id; else editMode">
-        <strong>{{ note.title }}</strong> - {{ note.content }}<br><br>
-        <p>Finished: {{ note.finished ? 'Yes' : 'No' }}</p>
-        <p>Finish Time: {{ note.finishTime | date:'medium' }}</p>
-        <p>Tags:
-          <span *ngFor="let tag of note.tags">
-        <span *ngIf="tag">{{ tag.name }}</span>
-      </span>
-        </p>
-
-        <button (click)="startEditing(note.id)">Edit</button>
-        <button (click)="deleteNote(note.id)">Delete</button>
-      </div>
-      <ng-template #editMode>
-        <form (submit)="updateNote(note.id, updatedNote)">
-          <label>Title:</label>
-          <input type="text" id="editTitle" [(ngModel)]="updatedNote.title" name="title" required><br><br>
-
-          <label>Content:</label>
-          <textarea id="editContent" [(ngModel)]="updatedNote.content" name="content" required></textarea><br><br>
-
-          <label>Finished:</label>
-          <input type="checkbox" id="editFinished" [(ngModel)]="updatedNote.finished" name="finished"><br><br>
-
-          <label>Finish Time:</label>
-          <input type="datetime-local" id="editFinishTime" [(ngModel)]="updatedNote.finishTime" name="finishTime"><br><br>
-
-          <div class="tag-section">
-            <h3>Available Tags</h3>
-            <select [(ngModel)]="selectedTagId" [ngModelOptions]="{ standalone: true }">
-              <option *ngFor="let tag of availableTags" [value]="tag.id">{{ tag.name }}</option>
-            </select>
-            <button type="button" (click)="assignTag(selectedTagId); cancelEditing()">Assign Tag</button>
-            <button type="button" (click)="unassignTag(selectedTagId); cancelEditing()">Unassign Tag</button>
-          </div>
-
-          <div class="button-group">
-            <button type="submit">Save</button>
-            <button type="button" (click)="cancelEditing()">Cancel</button>
-          </div>
-        </form>
-      </ng-template>
-    </li>
-  </ul>
-</div>
-
-<div *ngIf="notes.length === 0">
-  <p>No notes available.</p>
-</div>
-
 </div>
