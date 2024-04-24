@@ -27,6 +27,15 @@
                 <input type="checkbox" id="editFinished" [(ngModel)]="updatedNote.finished" name="finished"><br><br>
                 <label>Finish Time:</label>
                 <input type="datetime-local" id="editFinishTime" [(ngModel)]="updatedNote.finishTime" name="finishTime"><br><br>
+                <label>Tags:</label>
+                <mat-select class="white-background" [(value)]="selectedTagId" name="tags" required>
+                  <mat-option *ngFor="let tag of availableTags" [value]="tag.id">{{ tag.name }}</mat-option>
+                </mat-select>
+                <div class="button-group">
+                <button type="submit" (click)="assignTag(selectedTagId)">Assign Tag</button>
+                <button type="button" (click)="unassignTag(selectedTagId)">Unassign Tag</button>
+                  </div>
+                <br><br>
                 <div class="button-group">
                   <button type="submit">Save</button>
                   <button type="button" (click)="cancelEditing()">Cancel</button>

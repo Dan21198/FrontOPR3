@@ -6,6 +6,7 @@ import {TagComponent} from "../tag/tag.component";
 import {TagService} from "../service/tag.service";
 import {NotificationService} from "../service/notification.service";
 import {NotificationStatus} from "../notification-status";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @Component({
@@ -14,7 +15,8 @@ import {NotificationStatus} from "../notification-status";
   imports: [
     CommonModule,
     FormsModule,
-    TagComponent
+    TagComponent,
+    MatSelectModule
   ],
   templateUrl: './note.component.html',
   styleUrl: './note.component.css'
