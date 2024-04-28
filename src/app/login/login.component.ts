@@ -6,6 +6,7 @@ import {NoteService} from "../service/note.service";
 import {TagService} from "../service/tag.service";
 import {UserService} from "../service/user.service";
 import {AuthService} from "../service/auth.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent {
   loginPassword: string = '';
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   login() {
@@ -29,10 +31,9 @@ export class LoginComponent {
       email: this.loginEmail,
       password: this.loginPassword
     }).subscribe(response => {
-      console.log('User logged in successfully:', response);
       this.router.navigate(['/notes']);
     }, error => {
-      console.error('Login failed:', error);
+      this.snackBar.open('Login failed. Please try again!', 'Close', { duration: 3000 });
     });
   }
 

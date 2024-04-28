@@ -7,6 +7,7 @@ import {TagService} from "../service/tag.service";
 import {NotificationService} from "../service/notification.service";
 import {NotificationStatus} from "../notification-status";
 import {MatSelectModule} from "@angular/material/select";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -16,7 +17,8 @@ import {MatSelectModule} from "@angular/material/select";
     CommonModule,
     FormsModule,
     TagComponent,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
   ],
   templateUrl: './note.component.html',
   styleUrl: './note.component.css',
@@ -64,7 +66,7 @@ export class NoteComponent implements OnInit {
 
   searchNotes() {
     if (this.searchFinished !== '' && this.searchTagId !== '') {
-      // Handle case for both conditions
+
     } else if (this.searchFinished !== '') {
       this.noteService.getNotesByFinishedStatus(this.searchFinished === 'true').subscribe(
         data => {
@@ -194,10 +196,6 @@ export class NoteComponent implements OnInit {
           this.notificationService.show('Error assigning tag to note', NotificationStatus.Fail);
         }
       );
-    } else {
-      console.error('No note selected.');
-
-      this.notificationService.show('No note selected', NotificationStatus.Fail);
     }
   }
 
@@ -221,10 +219,6 @@ export class NoteComponent implements OnInit {
           this.notificationService.show('Error removing tag from note', NotificationStatus.Fail);
         }
       );
-    } else {
-      console.error('No note selected.');
-
-      this.notificationService.show('No note selected', NotificationStatus.Fail);
     }
   }
 

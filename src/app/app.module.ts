@@ -8,7 +8,6 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTableModule} from "@angular/material/table";
-import {NotificationComponent } from './notification/notification.component';
 import {MatInputModule} from "@angular/material/input";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,7 +26,6 @@ import {MatMenuModule} from "@angular/material/menu";
   declarations: [
     AppComponent,
     MainMenuComponent,
-    NotificationComponent,
     RegistrationComponent
   ],
   imports: [
