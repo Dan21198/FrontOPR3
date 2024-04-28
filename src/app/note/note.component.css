@@ -59,6 +59,10 @@
   transition: background-color 0.3s ease;
 }
 
+.custom-note-form button:not(:last-child) {
+  margin-right: 8px;
+}
+
 .custom-note-form button:last-child {
   background-color: #dc3545;
 }
@@ -112,23 +116,45 @@
 
 .create-note {
   width: 100%;
-  padding: 15px;
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center; /* Center the dots horizontally */
+  padding: 10px 0; /* Add some vertical padding */
+  list-style-type: none; /* Remove default list styling */
+}
+
+.pagination a {
+  display: inline-block;
+  width: 20px; /* Width of the dot */
+  height: 20px; /* Height of the dot */
+  background-color: #bbb; /* Default background color */
+  color: transparent; /* Hide the number */
+  border-radius: 50%; /* Make the dots round */
+  margin: 0 5px; /* Add some space between the dots */
+  text-align: center; /* Ensure text is centered (if visible) */
+  line-height: 20px; /* Center the text vertically */
+  transition: background-color 0.3s; /* Smooth transition for hover and active states */
+  text-decoration: none; /* Remove underline from links */
+}
+
+.pagination a:hover,
+.pagination a.active {
+  background-color: #333; /* Darker background on hover/active */
+  color: #fff; /* Change text color to white (if displaying numbers) */
+}
+
+.pagination a.active {
+  background-color: #5a5a5a; /* Even darker for the active page */
 }
 
 @media (max-width: 768px) {
   .main-content {
     flex-direction: column;
-  }
-
-  .notes-section, .search-section {
-    flex-basis: 100%;
-    max-width: none;
-  }
-
-  .white-background {
-    background-color: white;
   }
 }
 

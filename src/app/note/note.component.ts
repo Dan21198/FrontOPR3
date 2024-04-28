@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {NoteService} from "../service/note.service";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
@@ -19,7 +19,8 @@ import {MatSelectModule} from "@angular/material/select";
     MatSelectModule
   ],
   templateUrl: './note.component.html',
-  styleUrl: './note.component.css'
+  styleUrl: './note.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class NoteComponent implements OnInit {
   notes: any[] = [];
@@ -31,6 +32,8 @@ export class NoteComponent implements OnInit {
   editingNoteId: number | null = null;
   selectedTagId: number | null = null;
   selectedNoteId: number | null = null;
+  currentPage: number = 1;
+  notesPerPage: number = 3;
 
   constructor(private noteService: NoteService,
               private tagService: TagService,
@@ -40,6 +43,23 @@ export class NoteComponent implements OnInit {
   ngOnInit(): void {
     this.fetchAllNotes();
     this.fetchAvailableTags();
+  }
+
+  get paginatedNotes(): any[] {
+    const startIndex = (this.currentPage - 1) * this.notesPerPage;
+    return this.notes.slice(startIndex, startIndex + this.notesPerPage);
+  }
+
+  get totalNumberOfPages(): number {
+    return Math.ceil(this.notes.length / this.notesPerPage);
+  }
+
+  setPage(page: number): void {
+    this.currentPage = page;
+  }
+
+  get pages(): number[] {
+    return Array(this.totalNumberOfPages).fill(0).map((x, i) => i + 1);
   }
 
   searchNotes() {
@@ -208,4 +228,5 @@ export class NoteComponent implements OnInit {
     }
   }
 
+  protected readonly Array = Array;
 }

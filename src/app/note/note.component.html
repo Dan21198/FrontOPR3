@@ -4,7 +4,7 @@
       <h2>Existing Notes</h2>
       <div *ngIf="notes.length > 0">
         <ul>
-          <li *ngFor="let note of notes">
+          <li *ngFor="let note of paginatedNotes">
             <div *ngIf="editingNoteId !== note.id; else editMode">
               <strong>{{ note.title }}</strong> - {{ note.content }}<br><br>
               <p>Finished: {{ note.finished ? 'Yes' : 'No' }}</p>
@@ -45,9 +45,17 @@
           </li>
         </ul>
       </div>
-      <div *ngIf="notes.length === 0">
-        <p>No notes available.</p>
+      <div class="pagination">
+        <ng-container *ngFor="let page of pages; let i = index">
+          <a href="javascript:void(0)" class="dot" [class.active]="currentPage === i + 1" (click)="setPage(i + 1)">
+            {{ i + 1 }}
+          </a>
+        </ng-container>
       </div>
+
+    </div>
+    <div *ngIf="notes.length === 0">
+      <p>No notes available.</p>
     </div>
 
     <div class="search-section">
