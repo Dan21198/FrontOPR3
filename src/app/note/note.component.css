@@ -153,6 +153,18 @@
   background-color: #5a5a5a;
 }
 
+.sorting-section {
+  display: flex;
+  align-items: flex-start;
+  align-content: stretch;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.material-icons {
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .main-content {
     flex-direction: column;

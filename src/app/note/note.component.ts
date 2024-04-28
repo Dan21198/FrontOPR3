@@ -33,9 +33,10 @@ export class NoteComponent implements OnInit {
   searchTagId: string = '';
   editingNoteId: number | null = null;
   selectedTagId: number | null = null;
-  selectedNoteId: number | null = null;
   currentPage: number = 1;
   notesPerPage: number = 3;
+  sortKey: string = 'title';
+  sortOrder: string = 'asc';
 
   constructor(private noteService: NoteService,
               private tagService: TagService,
@@ -45,6 +46,27 @@ export class NoteComponent implements OnInit {
   ngOnInit(): void {
     this.fetchAllNotes();
     this.fetchAvailableTags();
+  }
+
+  get sortedNotes(): any[] {
+    return this.notes.sort((a, b) => {
+      let comparison = 0;
+      let valueA = a[this.sortKey];
+      let valueB = b[this.sortKey];
+
+      if (valueA > valueB) {
+        comparison = 1;
+      } else if (valueA < valueB) {
+        comparison = -1;
+      }
+
+      return this.sortOrder === 'asc' ? comparison : comparison * -1;
+    });
+  }
+
+  toggleSortOrder() {
+    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    this.sortedNotes;
   }
 
   get paginatedNotes(): any[] {
@@ -221,6 +243,4 @@ export class NoteComponent implements OnInit {
       );
     }
   }
-
-  protected readonly Array = Array;
 }

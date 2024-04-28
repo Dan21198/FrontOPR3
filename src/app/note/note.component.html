@@ -1,6 +1,14 @@
 <div class="custom-note-form">
   <div class="main-content">
     <div class="notes-section">
+      <div class="sorting-section">
+        <label>Order:</label>
+        <span class="material-icons" style="cursor: pointer;" (click)="toggleSortOrder()">
+    {{ sortOrder === 'asc' ? 'sort_by_alpha' : 'sort_by_alpha' }}
+  </span>
+      </div>
+
+
       <h2>Existing Notes</h2>
       <div *ngIf="notes.length > 0">
         <ul>
