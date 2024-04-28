@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../service/auth.service';
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-registration',
@@ -12,7 +13,9 @@ export class RegistrationComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private userService: AuthService, private router: Router) { }
+  constructor(private userService: AuthService,
+              private router: Router,
+              private snackBar: MatSnackBar ) { }
 
   register() {
     this.userService.register({
@@ -20,10 +23,9 @@ export class RegistrationComponent {
       email: this.email,
       password: this.password
     }).subscribe(response => {
-      console.log('User registered successfully:', response);
       this.router.navigate(['/login']);
     }, error => {
-      console.error('Registration failed:', error);
+      this.snackBar.open('Registration failed! Please try again.', 'Close', { duration: 3000 });
     });
   }
 }
