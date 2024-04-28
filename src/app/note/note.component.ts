@@ -158,10 +158,8 @@ export class NoteComponent implements OnInit {
   assignTag(tagId: number | null): void {
     if (tagId !== null && this.editingNoteId !== null) {
       const noteId = this.editingNoteId;
-      console.log('Assigning tag:', tagId, 'to note:', noteId);
       this.tagService.assignTagToNote(tagId, noteId).subscribe(
         (response) => {
-          console.log('Tag assigned to note:', response);
           const editedNote = this.notes.find((note) => note.id === noteId);
           if (editedNote) {
             editedNote.tags.push(response);
