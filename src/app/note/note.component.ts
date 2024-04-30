@@ -8,6 +8,7 @@ import {NotificationService} from "../service/notification.service";
 import {NotificationStatus} from "../notification-status";
 import {MatSelectModule} from "@angular/material/select";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatTabsModule} from "@angular/material/tabs";
 
 
 @Component({
@@ -18,7 +19,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     FormsModule,
     TagComponent,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTabsModule
   ],
   templateUrl: './note.component.html',
   styleUrl: './note.component.css',
